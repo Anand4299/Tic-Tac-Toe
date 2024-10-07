@@ -1,77 +1,62 @@
-import React, { useState } from "react";
-import "./TicTacToe.css"; // Ensure you import the CSS
+import React, { useState } from 'react';
+import './TicTacToe.css'; // Link the CSS file for styling
 
 const TicTacToe = () => {
-  const [boxes, setBoxes] = useState(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState(true);
-  const [winner, setWinner] = useState(null);
-  const [isTie, setIsTie] = useState(false);
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [isXTurn, setIsXTurn] = useState(true);
+  const [message, setMessage] = useState("");
 
   const handleClick = (index) => {
-    // Ignore if box is already filled or there's a winner
-    if (boxes[index] || winner) return; 
-    const newBoxes = boxes.slice();
-    newBoxes[index] = isXNext ? "X" : "O"; // Mark the box with "X" or "O"
-    setBoxes(newBoxes);
-    setIsXNext(!isXNext); // Switch turns
+    if (board[index] || message) return;
 
-    const calculatedWinner = calculateWinner(newBoxes); // Check for winner
-    if (calculatedWinner) {
-      setWinner(calculatedWinner); // Set winner if found
-    } else if (newBoxes.every(Boolean)) {
-      setIsTie(true); // Set tie if all boxes are filled
-    }
-  };
+    const newBoard = [...board];
+    newBoard[index] = isXTurn ? 'X' : 'O';
+    setBoard(newBoard);
 
-  const calculateWinner = (squares) => {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let line of lines) {
-      const [a, b, c] = line;
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a]; // Return winner
-      }
+    const winner = calculateWinner(newBoard);
+    if (winner) {
+      setMessage(`${winner} Wins!`);
+    } else if (newBoard.every(tile => tile)) {
+      setMessage("It's a Tie!");
+    } else {
+      setIsXTurn(!isXTurn);
     }
-    return null; // No winner
   };
 
   const resetGame = () => {
-    setBoxes(Array(9).fill(null)); // Reset boxes
-    setWinner(null); // Reset winner
-    setIsTie(false); // Reset tie
-    setIsXNext(true); // Start with X
+    setBoard(Array(9).fill(null));
+    setIsXTurn(true);
+    setMessage("");
   };
 
-  const renderBox = (index) => (
-    <button className="box" onClick={() => handleClick(index)}>
-      {boxes[index]}
-    </button>
-  );
+  const calculateWinner = (board) => {
+    const winningCombos = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+
+    for (let combo of winningCombos) {
+      const [a, b, c] = combo;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
+      }
+    }
+
+    return null;
+  };
 
   return (
-    <div className="container">
-      <h1>Tic Tac Toe</h1>
-      <div className="game">
-        {renderBox(0)}
-        {renderBox(1)}
-        {renderBox(2)}
-        {renderBox(3)}
-        {renderBox(4)}
-        {renderBox(5)}
-        {renderBox(6)}
-        {renderBox(7)}
-        {renderBox(8)}
+    <div className="game-container">
+      <h1 className="heading">Tic Tac Toe</h1>
+      <div className="game-board">
+        {board.map((cell, index) => (
+          <button key={index} className="tile" onClick={() => handleClick(index)}>
+            {cell}
+          </button>
+        ))}
       </div>
-      {winner && <div id="msg">{winner} Wins!</div>}
-      {isTie && <div id="msg" className="tie-message">It's a Tie!</div>}
+      {message && <div id="msg" className="animate">{message}</div>}
       <button id="reset-btn" onClick={resetGame}>New Game</button>
     </div>
   );
