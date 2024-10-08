@@ -10,7 +10,7 @@ const TicTacToe = () => {
     if (board[index] || message) return;
 
     const newBoard = [...board];
-    newBoard[index] = isXTurn ? 'X' : 'O';
+    newBoard[index] = isXTurn ? 'HERO' : 'DON';
     setBoard(newBoard);
 
     const winner = calculateWinner(newBoard);

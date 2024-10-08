@@ -11,13 +11,13 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #8Abca4;
+  background-color: burlywood;
 }
 
 .game-container {
   text-align: center;
   padding: 40px;
-  background-color: #8a4cab;
+  background-color: mediumvioletred;
   border-radius: 15px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   max-width: 400px;
@@ -70,8 +70,8 @@ body, html {
 #reset-btn {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #28a745;
-  color: white;
+  background-color: lightyellow;
+  color: black;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -79,10 +79,18 @@ body, html {
 }
 
 #reset-btn:hover {
-  background-color: #218838;
+  background-color: orange;
   transform: scale(1.05);
 }
 
+/* Base styles for small screens (mobile-first approach) */
+.tile {
+  width: 70px;
+  height: 70px;
+  font-size: 1.2rem;
+}
+
+/* Small screens (max-width: 600px) */
 @media (max-width: 600px) {
   .tile {
     width: 80px;
@@ -91,10 +99,20 @@ body, html {
   }
 }
 
+/* Medium screens (601px - 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .tile {
     width: 90px;
     height: 90px;
     font-size: 1.8rem;
+  }
+}
+
+/* Large screens (1025px and above) */
+@media (min-width: 1025px) {
+  .tile {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
   }
 }
